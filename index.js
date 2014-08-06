@@ -1,5 +1,7 @@
 var request = require('request'),
-	cheerio = require('cheerio');
+var cheerio = require('cheerio');
+var err = require('error-helper');
+
 
 exports.is = function (options, callback) {
 
@@ -15,7 +17,7 @@ exports.is = function (options, callback) {
 		qs: queryString
 	}, function (error, response, body) {
 		if (error || response.statusCode !== 200) {
-			return callback(new Error('www.rsk.is refuses to respond or give back data'));
+			return callback(err(502,'www.rsk.is refuses to respond or give back data'));
 		}
 
 		var obj = {
@@ -32,7 +34,6 @@ exports.is = function (options, callback) {
 		};
 
 		if ($('.resultnote').length == 0) {
-			console.log('here')
 			var tr = $('.boxbody > .nozebra tbody tr');
 			if (tr.length > 0) {
 				var name = $('.boxbody > h1').html(),
